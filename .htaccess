@@ -1,13 +1,12 @@
 RewriteEngine On
 
 # define htaccess path
-#RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
-#RewriteRule ^(.*)$ - [E=BASE:%1]
+RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
+RewriteRule ^(.*)$ - [E=BASE:%1]
 
 # update.php like
 RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteRule ^(.*)$ %{ENV:BASE}public/$1 [L,NC]
-RewriteRule ^$ /public [L]
+RewriteRule ^(.*)$ %{ENV:BASE}public/$1 [L,NC]
 
 # inside core/data:
 #RewriteCond %{REQUEST_FILENAME} !-d

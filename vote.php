@@ -5,7 +5,7 @@ header("Access-Control-Allow-Origin: *");
 $vote = $_POST['vote'];
 $country = $_POST['country'];
 
-if (1 != $vote || 2 != $vote) {
+if (1 != $vote && 2 != $vote) {
     die('wrong post vote');
 }
 

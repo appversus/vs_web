@@ -20,7 +20,7 @@ vote($db);
 function vote($db) {
     global $vote, $country;
 
-    $sql = "UPDATE votes SET (v{$vote}) VALUES (v{$vote} + 1) WHERE cn = ?";
+    $sql = "UPDATE votes SET v{$vote} = v{$vote} + 1 WHERE cn = ?";
     $stmt = $db->prepare($sql);
     if (!$db) {
         die($db->error . " in $sql");

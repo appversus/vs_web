@@ -34,6 +34,19 @@ function vote($db) {
     }
 }
 
+//temp file
+if (!empty($_POST['pos'])) {
+    $pos = $_POST['pos'];
+    $filename = "temp.txt";
+    $time = time();
+    if ($time - filemtime($filename) > 60) {
+        $handle = fopen("temp.txt", "w"); //empty
+    } else {
+        $handle = fopen("temp.txt", "a"); //append
+    }
+    fwrite($handle, "$time;$pos|");
+}
+
 require 'selectAll.php';
 $arr = selectAll($db);
 echo json_encode($arr);

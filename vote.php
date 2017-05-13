@@ -58,7 +58,8 @@ if (!empty($_POST['pos'])) {
     } else {
         $handle = fopen("temp.txt", "a"); //append
     }
-    fwrite($handle, "$time;$pos;$vote|");
+    $seconds = $time / 1000;
+    fwrite($handle, "$seconds;$pos;$vote|");
 }
 
 echoAll($db);

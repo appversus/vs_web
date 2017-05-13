@@ -1,7 +1,7 @@
 <?php
 
 function selectAll($db) {
-    $sql = 'SELECT * FROM votes';
+    $sql = 'SELECT cn, v1, v2 FROM votes';
 
     $result = $db->query($sql);
     if (!$result) {

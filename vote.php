@@ -53,7 +53,7 @@ if (!empty($_POST['pos'])) {
     $pos = $_POST['pos'];
     $filename = "temp.txt";
     $time = time();
-    if ($time - filemtime($filename) > 60) {
+    if (file_exists($filename) && $time - filemtime($filename) > 60) {
         $handle = fopen("temp.txt", "w"); //empty
     } else {
         $handle = fopen("temp.txt", "a"); //append

@@ -39,7 +39,7 @@ function vote($db) {
             vote($db);
         } else {
             //can be not defined country: (not error)
-            echoAll();
+            echoAll($db);
         }
     }
 }
@@ -57,9 +57,9 @@ if (!empty($_POST['pos'])) {
     fwrite($handle, "$time;$pos|");
 }
 
-echoAll();
+echoAll($db);
 
-function echoAll() {
+function echoAll($db) {
     require 'selectAll.php';
     $arr = selectAll($db);
     echo json_encode($arr);

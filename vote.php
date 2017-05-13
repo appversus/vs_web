@@ -16,8 +16,11 @@ vote($db);
 function vote($db) {
     global $vote, $country;
 
-    $sql = "INSERT INTO votes (cn, v{$vote}) VALUES (?, 1) ON DUPLICATE KEY UPDATE v{$vote} = v{$vote} + 1";
-    $stmt = $db->prepare($sql) or die($db->error . " in $sql");
+    $sql = "UPDATE votes SET (v{$vote}) VALUES (v{$vote} + 1) WHERE cn = ?";
+    $stmt = $db->prepare($sql);
+    if (!$db) {
+        die($db->error . " in $sql");
+    }
     $stmt->bindParam(1, $country, SQLITE3_TEXT);
 
     $result = $stmt->execute();
@@ -28,9 +31,16 @@ function vote($db) {
         }
         $GLOBALS['createTable'] = true;
 
-        require 'createTable.php';
-        createTable($db);
-        vote($db);
+        //if table not exists
+        $result = $db->query("SELECT 1 FROM testtable LIMIT 1;");
+        if (!count($result)) {
+            require 'createTable.php';
+            createTable($db);
+            vote($db);
+        } else {
+            //can be not defined country: (not error)
+            echoAll();
+        }
     }
 }
 
@@ -47,6 +57,11 @@ if (!empty($_POST['pos'])) {
     fwrite($handle, "$time;$pos|");
 }
 
-require 'selectAll.php';
-$arr = selectAll($db);
-echo json_encode($arr);
+echoAll();
+
+function echoAll() {
+    require 'selectAll.php';
+    $arr = selectAll($db);
+    echo json_encode($arr);
+    die();
+}

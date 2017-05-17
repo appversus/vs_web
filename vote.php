@@ -36,7 +36,7 @@ function vote($db) {
         $GLOBALS['createTable'] = true;
 
         //if table not exists
-        $result = $db->query("SELECT 1 FROM testtable LIMIT 1;");
+        $result = $db->query("SELECT 1 FROM votes LIMIT 1;");
         if (!count($result)) {
             require 'createTable.php';
             createTable($db);
@@ -46,18 +46,29 @@ function vote($db) {
             echoAll($db);
         }
     }
+
+    $whitelist = array(
+        '127.0.0.1',
+        '::1'
+    );
+    if (in_array($_SERVER['REMOTE_ADDR'], $whitelist) && 0 == $db->changes()) {
+        echo "nothing changed in $sql";
+        die();
+    }
 }
 
 //temp file
-if (!empty($_POST['pos'])) {
+if (!empty($_POST['pos']) && "null" != $_POST['pos']) {
     $pos = $_POST['pos'];
     $filename = "temp.txt";
     $time = time();
-    if (file_exists($filename) && $time - filemtime($filename) > 60) {
-        $handle = fopen("temp.txt", "w"); //empty
-    } else {
+    
+    //TODO: activarte this when app works!
+//    if (file_exists($filename) && $time - filemtime($filename) > 60) {
+//        $handle = fopen("temp.txt", "w"); //empty
+//    } else {
         $handle = fopen("temp.txt", "a"); //append
-    }
+//    }
     $seconds = intval($time / 1000);
     fwrite($handle, "$seconds;$pos;$vote|");
 }
